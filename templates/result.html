@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Result - Smoke-Free Predictor{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Result Header -->
+            <div class="text-center mb-4">
+                <h2><i class="fas fa-chart-line"></i> Your Prediction Result</h2>
+                <p class="lead">AI-powered analysis of smoking cessation success probability</p>
+            </div>
+
+            <!-- Main Result -->
+            <div class="prediction-result {{ 'prediction-success' if prediction == 1 else 'prediction-failure' }}">
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                        <div style="font-size: 5rem;">
+                            {% if prediction == 1 %}
+                                <i class="fas fa-check-circle"></i>
+                            {% else %}
+                                <i class="fas fa-exclamation-triangle"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <h1 class="display-4 mb-3">{{ prediction_text }}</h1>
+                        {% if probability %}
+                            <h3>Confidence: {{ "%.1f" | format(probability * 100) }}%</h3>
+                        {% endif %}
+                        <p class="lead mt-3">
+                            {% if prediction == 1 %}
+                                Based on the provided information, the model predicts a high likelihood of smoking cessation success.
+                            {% else %}
+                                The model indicates challenges in smoking cessation based on current factors. Consider additional support strategies.
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        {% if probability %}
+                            <div class="progress" style="height: 30px; transform: rotate(-90deg); width: 120px; margin: 0 auto;">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ probability * 100 }}%;" 
+                                     aria-valuenow="{{ probability * 100 }}" 
+                                     aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Summary -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-user"></i> Your Profile</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Age:</strong> {{ input_data.age }} years<br>
+                                    <strong>Gender:</strong> {{ input_data.gender }}<br>
+                                    <strong>Sleep Hours:</strong> {{ input_data.sleep_hours }}/night<br>
+                                    <strong>Support System:</strong> {{ input_data.support_system.title() }}
+                                </div>
+                                <div class="col-6">
+                                    <strong>Stress Level:</strong> {{ input_data.stress_level }}/10<br>
+                                    <strong>Exercise Frequency:</strong> {{ input_data.exercise_freq }}/week<br>
+                                    <strong>Peer Pressure:</strong> {{ input_data.peer_pressure }}/10<br>
+                                    <strong>Motivation:</strong> {{ "%.1f" | format(input_data.motivation_score) }}/10
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-lightbulb"></i> Personalized Recommendations</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if prediction == 1 %}
+                                <div class="alert alert-success">
+                                    <h6><i class="fas fa-thumbs-up"></i> Strengths to Maintain:</h6>
+                                    <ul class="mb-0">
+                                        {% if input_data.motivation_score >= 7 %}
+                                        <li>High motivation level - keep it up!</li>
+                                        {% endif %}
+                                        {% if input_data.support_system == 'high' %}
+                                        <li>Strong support system - utilize it</li>
+                                        {% endif %}
+                                        {% if input_data.exercise_freq >= 3 %}
+                                        <li>Good exercise routine - maintain it</li>
+                                        {% endif %}
+                                        {% if input_data.stress_level <= 5 %}
+                                        <li>Well-managed stress levels</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            <h6><i class="fas fa-target"></i> Areas for Improvement:</h6>
+                            <ul>
+                                {% if input_data.stress_level > 7 %}
+                                <li>Consider stress management techniques (meditation, therapy)</li>
+                                {% endif %}
+                                {% if input_data.exercise_freq < 3 %}
+                                <li>Increase physical activity to 3+ times per week</li>
+                                {% endif %}
+                                {% if input_data.peer_pressure > 6 %}
+                                <li>Avoid environments with smoking triggers</li>
+                                {% endif %}
+                                {% if input_data.support_system == 'low' %}
+                                <li>Build a stronger support network</li>
+                                {% endif %}
+                                {% if input_data.sleep_hours < 7 %}
+                                <li>Improve sleep hygiene for better rest</li>
+                                {% endif %}
+                                {% if input_data.motivation_score < 6 %}
+                                <li>Focus on increasing motivation and commitment</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Items -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5><i class="fas fa-tasks"></i> Next Steps</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6><i class="fas fa-user-md text-primary"></i> Professional Support</h6>
+                                    <ul class="small">
+                                        <li>Consult with a healthcare provider</li>
+                                        <li>Consider nicotine replacement therapy</li>
+                                        <li>Look into counseling services</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6><i class="fas fa-users text-info"></i> Social Support</h6>
+                                    <ul class="small">
+                                        <li>Join a support group</li>
+                                        <li>Tell friends and family about your goals</li>
+                                        <li>Find an accountability partner</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6><i class="fas fa-cog text-warning"></i> Lifestyle Changes</h6>
+                                    <ul class="small">
+                                        <li>Develop healthy coping strategies</li>
+                                        <li>Create smoke-free environments</li>
+                                        <li>Plan for challenging situations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('predict') }}" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> New Prediction
+                </a>
+                <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <button onclick="window.print()" class="btn btn-outline-info">
+                    <i class="fas fa-print"></i> Print Results
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    .navbar, .footer, .btn { display: none !important; }
+    .main-container { box-shadow: none !important; background: white !important; }
+}
+</style>
+{% endblock %}

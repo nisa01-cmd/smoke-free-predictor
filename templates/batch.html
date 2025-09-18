@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Batch Predictions - Smoke-Free Predictor{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="text-center mb-4">
+        <h2><i class="fas fa-file-upload"></i> Batch Predictions</h2>
+        <p class="lead">Upload a CSV file to get predictions for multiple cases at once</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5><i class="fas fa-upload"></i> Upload CSV File</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-4">
+                            <label for="file" class="form-label">Select CSV File</label>
+                            <input type="file" class="form-control" id="file" name="file" accept=".csv" required>
+                            <div class="form-text">
+                                Upload a CSV file with the required columns for batch predictions.
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-magic"></i> Process Batch Predictions
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h5><i class="fas fa-info-circle"></i> CSV Format Requirements</h5>
+                </div>
+                <div class="card-body">
+                    <p class="small">Your CSV file should include these columns:</p>
+                    <ul class="small">
+                        <li><strong>age</strong> - Age in years (18-80)</li>
+                        <li><strong>gender</strong> - Male or Female</li>
+                        <li><strong>stress_level</strong> - Stress level (1-10)</li>
+                        <li><strong>peer_pressure</strong> - Peer pressure (1-10)</li>
+                        <li><strong>exercise_freq</strong> - Exercise frequency (0-7)</li>
+                        <li><strong>sleep_hours</strong> - Sleep hours per night</li>
+                        <li><strong>motivation_score</strong> - Motivation (1-10)</li>
+                        <li><strong>support_system</strong> - low, medium, or high</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header bg-success text-white">
+                    <h6><i class="fas fa-download"></i> Sample CSV Template</h6>
+                </div>
+                <div class="card-body">
+                    <p class="small">Download a sample CSV template:</p>
+                    <a href="data:text/csv;charset=utf-8,age,gender,stress_level,peer_pressure,exercise_freq,sleep_hours,motivation_score,support_system%0A35,Female,6,4,3,7.5,8.2,high%0A42,Male,8,6,2,6.5,5.5,medium" 
+                       download="sample_batch_data.csv" class="btn btn-success btn-sm">
+                        <i class="fas fa-download"></i> Download Template
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

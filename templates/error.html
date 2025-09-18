@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Error {{ error_code }} - Smoke-Free Predictor{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="text-center">
+        <div class="display-1 text-primary">{{ error_code }}</div>
+        <h1>Oops! Something went wrong</h1>
+        <p class="lead">{{ error_message }}</p>
+        
+        <div class="mt-4">
+            <a href="{{ url_for('home') }}" class="btn btn-primary">
+                <i class="fas fa-home"></i> Go Home
+            </a>
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Go Back
+            </a>
+        </div>
+        
+        <div class="mt-5">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5>What you can do:</h5>
+                    <ul class="text-start">
+                        <li>Check the URL and try again</li>
+                        <li>Go back to the <a href="{{ url_for('home') }}">home page</a></li>
+                        <li>Try making a <a href="{{ url_for('predict') }}">new prediction</a></li>
+                        <li>Contact support if the problem persists</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

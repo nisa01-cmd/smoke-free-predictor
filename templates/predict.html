@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}Make Prediction - Smoke-Free Predictor{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3><i class="fas fa-brain"></i> Smoke-Free Success Prediction</h3>
+                    <p class="mb-0">Enter the information below to get an AI-powered prediction</p>
+                </div>
+                
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('predict') }}" id="predictionForm">
+                        <div class="row">
+                            <!-- Demographics -->
+                            <div class="col-12 mb-4">
+                                <h5><i class="fas fa-user text-primary"></i> Demographics</h5>
+                                <hr>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" name="age" min="18" max="80" value="35" required>
+                                <div class="form-text">Age in years (18-80)</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-control" id="gender" name="gender" required>
+                                    <option value="Male">Male</option>
+                                    <option value="Female" selected>Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Behavioral Factors -->
+                            <div class="col-12 mb-4">
+                                <h5><i class="fas fa-heart text-danger"></i> Health & Lifestyle</h5>
+                                <hr>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="stress_level" class="form-label">Stress Level</label>
+                                <input type="range" class="form-range" id="stress_level" name="stress_level" min="1" max="10" value="5" oninput="updateSliderValue('stress_level')">
+                                <div class="d-flex justify-content-between">
+                                    <small>Low (1)</small>
+                                    <span class="badge bg-secondary" id="stress_level_value">5</span>
+                                    <small>High (10)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="exercise_freq" class="form-label">Exercise Frequency (per week)</label>
+                                <input type="range" class="form-range" id="exercise_freq" name="exercise_freq" min="0" max="7" value="3" oninput="updateSliderValue('exercise_freq')">
+                                <div class="d-flex justify-content-between">
+                                    <small>Never (0)</small>
+                                    <span class="badge bg-secondary" id="exercise_freq_value">3</span>
+                                    <small>Daily (7)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="sleep_hours" class="form-label">Sleep Hours per Night</label>
+                                <input type="number" class="form-control" id="sleep_hours" name="sleep_hours" min="4" max="12" step="0.5" value="7.5" required>
+                                <div class="form-text">Average hours of sleep per night</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="peer_pressure" class="form-label">Peer Pressure to Smoke</label>
+                                <input type="range" class="form-range" id="peer_pressure" name="peer_pressure" min="1" max="10" value="4" oninput="updateSliderValue('peer_pressure')">
+                                <div class="d-flex justify-content-between">
+                                    <small>None (1)</small>
+                                    <span class="badge bg-secondary" id="peer_pressure_value">4</span>
+                                    <small>High (10)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Motivation & Support -->
+                            <div class="col-12 mb-4">
+                                <h5><i class="fas fa-thumbs-up text-success"></i> Motivation & Support</h5>
+                                <hr>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="motivation_score" class="form-label">Motivation to Quit</label>
+                                <input type="range" class="form-range" id="motivation_score" name="motivation_score" min="1" max="10" step="0.1" value="7.5" oninput="updateSliderValue('motivation_score')">
+                                <div class="d-flex justify-content-between">
+                                    <small>Low (1)</small>
+                                    <span class="badge bg-secondary" id="motivation_score_value">7.5</span>
+                                    <small>High (10)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="support_system" class="form-label">Support System</label>
+                                <select class="form-control" id="support_system" name="support_system" required>
+                                    <option value="low">Low - Little to no support</option>
+                                    <option value="medium" selected>Medium - Some family/friend support</option>
+                                    <option value="high">High - Strong support network</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-magic"></i> Get Prediction
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Info Panel -->
+        <div class="col-lg-4">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h5><i class="fas fa-info-circle"></i> How It Works</h5>
+                </div>
+                <div class="card-body">
+                    <h6>What This Predicts</h6>
+                    <p class="small">Our AI model analyzes your inputs to predict the likelihood of successful smoking cessation.</p>
+                    
+                    <h6>Key Factors</h6>
+                    <ul class="small">
+                        <li><strong>Demographics:</strong> Age and gender patterns</li>
+                        <li><strong>Lifestyle:</strong> Stress, exercise, and sleep habits</li>
+                        <li><strong>Environment:</strong> Peer pressure and social factors</li>
+                        <li><strong>Motivation:</strong> Personal drive and support system</li>
+                    </ul>
+                    
+                    <h6>Result Interpretation</h6>
+                    <p class="small">You'll receive a success prediction with probability score and personalized insights.</p>
+                    
+                    <div class="alert alert-info">
+                        <small>
+                            <i class="fas fa-shield-alt"></i> 
+                            <strong>Privacy:</strong> Your data is processed securely and not stored permanently.
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header bg-success text-white">
+                    <h6><i class="fas fa-lightbulb"></i> Tips for Success</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="small mb-0">
+                        <li>Build a strong support network</li>
+                        <li>Manage stress through healthy activities</li>
+                        <li>Maintain regular exercise routine</li>
+                        <li>Get adequate sleep (7-9 hours)</li>
+                        <li>Avoid smoking triggers</li>
+                        <li>Consider professional help</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateSliderValue(sliderId) {
+    const slider = document.getElementById(sliderId);
+    const valueSpan = document.getElementById(sliderId + '_value');
+    valueSpan.textContent = slider.value;
+    
+    // Update color based on value
+    const value = parseFloat(slider.value);
+    const max = parseFloat(slider.max);
+    const percentage = (value / max) * 100;
+    
+    if (sliderId === 'stress_level' || sliderId === 'peer_pressure') {
+        // Red for high stress/pressure
+        if (percentage > 70) valueSpan.className = 'badge bg-danger';
+        else if (percentage > 40) valueSpan.className = 'badge bg-warning';
+        else valueSpan.className = 'badge bg-success';
+    } else if (sliderId === 'motivation_score' || sliderId === 'exercise_freq') {
+        // Green for high motivation/exercise
+        if (percentage > 70) valueSpan.className = 'badge bg-success';
+        else if (percentage > 40) valueSpan.className = 'badge bg-warning';
+        else valueSpan.className = 'badge bg-danger';
+    } else {
+        valueSpan.className = 'badge bg-secondary';
+    }
+}
+
+// Initialize slider values on page load
+document.addEventListener('DOMContentLoaded', function() {
+    ['stress_level', 'peer_pressure', 'exercise_freq', 'motivation_score'].forEach(sliderId => {
+        updateSliderValue(sliderId);
+    });
+});
+</script>
+{% endblock %}

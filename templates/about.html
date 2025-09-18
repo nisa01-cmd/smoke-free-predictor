@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}About - Smoke-Free Predictor{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="text-center mb-5">
+        <h1><i class="fas fa-info-circle"></i> About Smoke-Free Predictor</h1>
+        <p class="lead">Learn about our AI-powered smoking cessation prediction system</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3>What is Smoke-Free Predictor?</h3>
+                    <p>
+                        Smoke-Free Predictor is an advanced machine learning application designed to analyze 
+                        various personal and behavioral factors to predict the likelihood of successful 
+                        smoking cessation. Our AI model helps individuals and healthcare providers make 
+                        informed decisions about smoking cessation strategies.
+                    </p>
+
+                    <h4 class="mt-4">How it Works</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-database text-primary"></i> Data Collection</h6>
+                            <p class="small">We analyze key factors including demographics, lifestyle habits, 
+                            stress levels, support systems, and motivation scores.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-brain text-info"></i> AI Processing</h6>
+                            <p class="small">Our Random Forest algorithm processes the input data to identify 
+                            patterns associated with successful smoking cessation.</p>
+                        </div>
+                    </div>
+
+                    <h4 class="mt-4">Key Features</h4>
+                    <ul>
+                        <li><strong>Individual Predictions:</strong> Get personalized success probability scores</li>
+                        <li><strong>Batch Processing:</strong> Analyze multiple cases simultaneously</li>
+                        <li><strong>REST API:</strong> Integrate predictions into your applications</li>
+                        <li><strong>Detailed Insights:</strong> Receive actionable recommendations</li>
+                        <li><strong>Privacy-Focused:</strong> No permanent data storage</li>
+                    </ul>
+
+                    <h4 class="mt-4">Applications</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center p-3">
+                                <i class="fas fa-hospital fa-2x text-primary mb-2"></i>
+                                <h6>Healthcare</h6>
+                                <p class="small">Clinical decision support for smoking cessation programs</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3">
+                                <i class="fas fa-flask fa-2x text-info mb-2"></i>
+                                <h6>Research</h6>
+                                <p class="small">Academic research on smoking cessation factors and outcomes</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3">
+                                <i class="fas fa-user fa-2x text-success mb-2"></i>
+                                <h6>Personal Use</h6>
+                                <p class="small">Individual assessment and self-improvement planning</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            {% if model_info %}
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white">
+                    <h5><i class="fas fa-cog"></i> Model Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Type:</strong> {{ model_info.model_type.title() }}</p>
+                    <p><strong>Algorithm:</strong> Random Forest</p>
+                    <p><strong>Status:</strong> 
+                        {% if model_info.is_trained %}
+                            <span class="badge bg-success">Trained & Ready</span>
+                        {% else %}
+                            <span class="badge bg-warning">Not Trained</span>
+                        {% endif %}
+                    </p>
+                    {% if model_info.feature_count %}
+                    <p><strong>Features:</strong> {{ model_info.feature_count }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5><i class="fas fa-shield-alt"></i> Privacy & Security</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="small">
+                        <li>No personal data is stored permanently</li>
+                        <li>All processing happens in real-time</li>
+                        <li>Secure HTTPS connections</li>
+                        <li>GDPR compliant processing</li>
+                        <li>Anonymous usage analytics only</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-exclamation-triangle"></i> Important Notice</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <p class="small mb-0">
+                            <strong>Medical Disclaimer:</strong> This tool is for informational purposes only 
+                            and should not replace professional medical advice. Always consult with healthcare 
+                            providers for smoking cessation guidance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h4>Ready to Get Started?</h4>
+                    <p>Try our prediction tool or explore the API for integration</p>
+                    <a href="{{ url_for('predict') }}" class="btn btn-light">
+                        <i class="fas fa-play"></i> Make a Prediction
+                    </a>
+                    <a href="{{ url_for('home') }}#api" class="btn btn-outline-light ms-2">
+                        <i class="fas fa-code"></i> View API Docs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
